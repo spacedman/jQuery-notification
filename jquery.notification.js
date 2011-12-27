@@ -36,6 +36,13 @@
 		// Clear old notifications
 		$('#jquery-notification').remove();
 
+		clickCall = function(obj){
+		    clearTimeout(timeout);
+		    notification.fadeOut(settings.hideSpeed, function(){
+			    obj.remove();
+			});
+		}
+
 		// Create it
 		notification.appendTo($('BODY')).addClass(settings.className).text(message).css({
 			position: 'absolute',
@@ -48,14 +55,11 @@
 			$(this).removeClass(settings.className + '-hover');
 			if (settings.freezeOnHover) {
 				timeout = setTimeout(function () {
-					notification.trigger('click');
+					clickCall($(this));
 				}, settings.duration);
 			}
 		}).click(function () {
-			clearTimeout(timeout);
-			notification.fadeOut(settings.hideSpeed, function () {
-				$(this).remove();
-			});
+			clickCall($(this));
 		}).wrapInner('<div id="jquery-notification-message" />');
 
 		// Position it
@@ -109,7 +113,7 @@
 		}).fadeIn(settings.showSpeed, function () {
 			// Hide it
 			timeout = setTimeout(function () {
-				notification.trigger('click');
+				clickCall($(this));
 			}, settings.duration);
 		});
 
